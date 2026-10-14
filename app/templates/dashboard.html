@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101f48">
+  <title>Planejamento de Produção | JM Engenharia</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}?v=2">
+</head>
+<body data-active-sheet="{{ active_key }}">
+  <aside class="sidebar">
+    <a class="brand" href="{{ url_for('index') }}" aria-label="Painel de planejamento">
+      <img src="{{ url_for('static', filename='images/jm-logo.png') }}" alt="JM Engenharia">
+      <span class="brand-caption">CONTROLE DE PRODUÇÃO</span>
+    </a>
+    <p class="nav-heading">PLANILHAS DO PROJETO</p>
+    <nav class="sheet-nav" aria-label="Abas da planilha">
+      {% for sheet in sheets %}
+      <a href="{{ url_for('index', aba=sheet.key) }}"
+         class="nav-link{% if sheet.key == active_key %} active{% endif %}"
+         {% if sheet.key == active_key %}aria-current="page"{% endif %}>
+        <span class="nav-dot"></span>{{ sheet.name }}
+      </a>
+      {% endfor %}
+    </nav>
+    <div class="sidebar-footer">
+      <span class="status-light"></span>
+      <span><strong>Dados operacionais</strong> <small>Persistência PostgreSQL</small></span>
+    </div>
+  </aside>
+
+  <main class="workspace">
+    <header class="topbar">
+      <div class="breadcrumb"><span>PROJETO</span><span class="crumb-separator">/</span><strong>Estação de Emenda</strong></div>
+      <a class="button button-quiet" id="export-link" href="{{ url_for('export_sheet', key=active_key) }}">
+        <span aria-hidden="true">↓</span> Exportar CSV
+      </a>
+    </header>
+
+    <section class="page-heading">
+      <div>
+        <p class="eyebrow">ACOMPANHAMENTO DE PRODUÇÃO</p>
+        <h1 id="sheet-title">Carregando planilha…</h1>
+        <p id="sheet-description" class="subtitle"></p>
+      </div>
+      <div class="updated-indicator"><span class="status-light"></span> Indicadores atualizados em tempo real</div>
+    </section>
+
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+
+    <section id="summary-cards" class="summary-grid" aria-label="Indicadores principais"></section>
+    <section id="sheet-content" aria-live="polite">
+      <div class="loading-panel"><span class="spinner"></span> Consultando dados do projeto…</div>
+    </section>
+    <footer class="footer-note">Avanço físico calculado pelo peso fabricado ÷ peso planejado. Valores expressos em kg.</footer>
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}?v=2" defer></script>
+</body>
+</html>
