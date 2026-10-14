@@ -1,4 +1,4 @@
-# Planejamento de Produção — JM Engenharia
+# Planejamento de Produção
 
 Aplicação web para substituir a planilha **Curva S Estação de Emenda.xlsx**. O
 backend é Python/Flask, os dados operacionais são persistidos no PostgreSQL e a
